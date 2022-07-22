@@ -1,6 +1,10 @@
 package main;
 import java.sql.Timestamp;
-import com.google.gson.Gson; 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import netscape.javascript.JSObject; 
 
 /*
   "ts": "YYY-MM-DD 13:30:30", when the track stopped playing in UTC (Coordinated Universal Time).
@@ -45,31 +49,34 @@ public class EndSongObject {
     Boolean shuffle;
     Boolean skipped;
     Boolean offline;
-    Timestamp offline_timestamp;
+    int offline_timestamp;
     Boolean incognito_mode;
 
-    public EndSongObject(Timestamp ts, String username, String platform, int ms_played, String conn_country, String ip_addr_decrypted, String user_agent_decrypted, String master_metadata_track_name, String master_metadata_album_artist_name, String master_metadata_album_album_name, String spotify_track_uri, String episode_name, String episode_show_name, String spotify_episode_uri, String reason_start, String reason_end, Boolean shuffle, Boolean skipped, Boolean offline, Timestamp offline_timestamp, Boolean incognito_mode) {
-        this.ts = ts;
-        this.username = username;
-        this.platform = platform;
-        this.ms_played = ms_played;
-        this.conn_country = conn_country;
-        this.ip_addr_decrypted = ip_addr_decrypted;
-        this.user_agent_decrypted = user_agent_decrypted;
-        this.master_metadata_track_name = master_metadata_track_name;
-        this.master_metadata_album_artist_name = master_metadata_album_artist_name;
-        this.master_metadata_album_album_name = master_metadata_album_album_name;
-        this.spotify_track_uri = spotify_track_uri;
-        this.episode_name = episode_name;
-        this.episode_show_name = episode_show_name;
-        this.spotify_episode_uri = spotify_episode_uri;
-        this.reason_start = reason_start;
-        this.reason_end = reason_end;
-        this.shuffle = shuffle;
-        this.skipped = skipped;
-        this.offline = offline;
-        this.offline_timestamp = offline_timestamp;
-        this.incognito_mode = incognito_mode;
+    public EndSongObject(JsonObject obj) {
+        String tempStamp = obj.get("ts").getAsString(); //yyyy-mm-ddT14:07:59Z //yyyy-mm-dd hh:mm:ss[.fffffffff] 
+        tempStamp = tempStamp.replace("T", " ").replace("Z", " ");
+        this.ts = Timestamp.valueOf(tempStamp);
+        this.username = obj.get("username").getAsString();
+        this.platform = obj.get("platform").getAsString();
+        this.ms_played = obj.get("ms_played").getAsInt();
+        this.conn_country = obj.get("conn_country").getAsString();
+        this.ip_addr_decrypted = obj.get("ip_addr_decrypted").getAsString();
+        this.user_agent_decrypted = obj.get("user_agent_decrypted").getAsString();
+        this.master_metadata_track_name = obj.get("master_metadata_track_name").getAsString();
+        this.master_metadata_album_artist_name = obj.get("master_metadata_album_artist_name").getAsString();
+        this.master_metadata_album_album_name = obj.get("master_metadata_album_album_name").getAsString();
+        this.spotify_track_uri = obj.get("spotify_track_uri").getAsString();
+        this.episode_name = new Gson().fromJson(obj, EpisodeName.class).episode_name;
+        this.episode_show_name = new Gson().fromJson(obj, EpisodeShowName.class).episode_show_name;
+        this.spotify_episode_uri = new Gson().fromJson(obj, SpotifyEpisodeUri.class).spotify_episode_uri;
+        this.reason_start = obj.get("reason_start").getAsString();
+        this.reason_end = obj.get("reason_end").getAsString();
+        this.shuffle = new Gson().fromJson(obj, Shuffle.class).shuffle;
+        this.skipped = new Gson().fromJson(obj, Skipped.class).skipped;
+        this.offline = new Gson().fromJson(obj, Offline.class).offline;
+        this.offline_timestamp = new Gson().fromJson(obj, OfflineTimestamp.class).offline_timestamp;
+        this.incognito_mode = new Gson().fromJson(obj, IncognitoMode.class).incognito_mode;
+
     }
 
     public Timestamp getTs() {
@@ -224,11 +231,11 @@ public class EndSongObject {
         this.offline = offline;
     }
 
-    public Timestamp getOffline_timestamp() {
+    public int getOffline_timestamp() {
         return offline_timestamp;
     }
 
-    public void setOffline_timestamp(Timestamp offline_timestamp) {
+    public void setOffline_timestamp(int offline_timestamp) {
         this.offline_timestamp = offline_timestamp;
     }
 
@@ -246,4 +253,29 @@ public class EndSongObject {
         EndSongObject endSongObject = gson.fromJson(json, EndSongObject.class);
         return endSongObject;
     }
+}
+
+class EpisodeName {
+    public String episode_name;
+}
+class EpisodeShowName {
+    public String episode_show_name;
+}
+class SpotifyEpisodeUri {
+    public String spotify_episode_uri;
+}
+class Shuffle {
+    public Boolean shuffle;
+}
+class Skipped {
+    public Boolean skipped;
+}
+class Offline {
+    public Boolean offline;
+}
+class OfflineTimestamp {
+    public int offline_timestamp;
+}
+class IncognitoMode {
+    public Boolean incognito_mode;
 }
