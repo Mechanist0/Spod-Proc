@@ -1,10 +1,9 @@
 package main;
 import java.sql.Timestamp;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import java.util.Comparator;
 
-import netscape.javascript.JSObject; 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 /*
   "ts": "YYY-MM-DD 13:30:30", when the track stopped playing in UTC (Coordinated Universal Time).
@@ -61,11 +60,11 @@ public class EndSongObject {
         this.ms_played = obj.get("ms_played").getAsInt();
         this.conn_country = obj.get("conn_country").getAsString();
         this.ip_addr_decrypted = obj.get("ip_addr_decrypted").getAsString();
-        this.user_agent_decrypted = obj.get("user_agent_decrypted").getAsString();
-        this.master_metadata_track_name = obj.get("master_metadata_track_name").getAsString();
-        this.master_metadata_album_artist_name = obj.get("master_metadata_album_artist_name").getAsString();
-        this.master_metadata_album_album_name = obj.get("master_metadata_album_album_name").getAsString();
-        this.spotify_track_uri = obj.get("spotify_track_uri").getAsString();
+        this.user_agent_decrypted = new Gson().fromJson(obj, UserAgentDecrypted.class).user_agent_decrypted;
+        this.master_metadata_track_name = new Gson().fromJson(obj, MasterMetadataTrackName.class).master_metadata_track_name;
+        this.master_metadata_album_artist_name = new Gson().fromJson(obj, MasterMetadataAlbumArtistName.class).master_metadata_album_artist_name;
+        this.master_metadata_album_album_name = new Gson().fromJson(obj, MasterMetadataAlbumAlbumName.class).master_metadata_album_album_name;
+        this.spotify_track_uri = new Gson().fromJson(obj, SpotifyTrackUri.class).spotify_track_uri;
         this.episode_name = new Gson().fromJson(obj, EpisodeName.class).episode_name;
         this.episode_show_name = new Gson().fromJson(obj, EpisodeShowName.class).episode_show_name;
         this.spotify_episode_uri = new Gson().fromJson(obj, SpotifyEpisodeUri.class).spotify_episode_uri;
@@ -253,8 +252,32 @@ public class EndSongObject {
         EndSongObject endSongObject = gson.fromJson(json, EndSongObject.class);
         return endSongObject;
     }
-}
 
+    @Override
+    public String toString() {
+        return "[" + getMaster_metadata_track_name() + "],";
+    }
+
+        
+}
+class TS {
+    public Timestamp ts;
+}
+class UserAgentDecrypted {
+    public String user_agent_decrypted;
+}
+class MasterMetadataTrackName {
+    public String master_metadata_track_name;
+}
+class MasterMetadataAlbumArtistName {
+    public String master_metadata_album_artist_name;
+}
+class MasterMetadataAlbumAlbumName {
+    public String master_metadata_album_album_name;
+}
+class SpotifyTrackUri {
+    public String spotify_track_uri;
+}
 class EpisodeName {
     public String episode_name;
 }
@@ -279,3 +302,4 @@ class OfflineTimestamp {
 class IncognitoMode {
     public Boolean incognito_mode;
 }
+
