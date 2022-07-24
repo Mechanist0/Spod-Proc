@@ -5,35 +5,36 @@ package main;
  *
  */
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 
 public class SpodProc {
     public static void main(String[] args) {
         String fileName = "spodproc/src/resources/endsong_0.json";
-        JsonArray masterArray = readJsonFile(fileName);
+        JsonArray masterArray = Helper.readJsonFile(fileName);
         List<EndSongObject> endSongObjectArray = new ArrayList<EndSongObject>();
+        ArrayList<EndSongObject.EndReason> endReasons = new ArrayList<EndSongObject.EndReason>();
 
         int amount = 0;
         String songName = "";
 
         for (JsonElement jsonElement : masterArray) {
             EndSongObject endSongObject = new EndSongObject(jsonElement.getAsJsonObject());
+            endReasons.add(endSongObject.getReason_end());
+
             endSongObjectArray.add(endSongObject);
             if (endSongObject.getMaster_metadata_track_name() != null)
                 if (endSongObject.getMaster_metadata_track_name().equals(songName))
                     amount++;
         }
 
+        endReasons = Helper.removeDuplicates(endReasons);
         System.out.println("You listened to " + songName + " " + amount + " times.");
+        System.out.println(endReasons);
 
         Collections.sort(endSongObjectArray, new MyComparator());
 
@@ -42,39 +43,7 @@ public class SpodProc {
             System.out.println(obj.getTs() + " " + obj.getMaster_metadata_track_name());
         }
 
-    }
-
-    /**
-     * @param fileName
-     * @return a JsonArray of the file
-     **/
-    public static JsonArray readJsonFile(String fileName) {
-        JsonArray jsonArray = new JsonArray();
-        try {
-            File myObj = new File(fileName);
-            Scanner myReader = new Scanner(myObj);
-            StringBuilder sb = new StringBuilder();
-
-            while (myReader.hasNextLine()) {
-                sb.append(myReader.nextLine());
-            }
-
-            Gson gson = new Gson();
-            JsonArray outerArray = gson.fromJson(sb.toString(), JsonArray.class);
-
-            for (JsonElement jsonElement : outerArray) {
-                jsonArray.add(jsonElement.getAsJsonObject());
-            }
-
-            myReader.close();
-            return jsonArray;
-
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-            return null;
-        }
-    }
+    }  
 }
 
 class MyComparator implements Comparator<EndSongObject> {
