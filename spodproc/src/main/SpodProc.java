@@ -17,23 +17,24 @@ public class SpodProc {
         String fileName = "spodproc/src/resources/endsong_0.json";
         JsonArray masterArray = Helper.readJsonFile(fileName);
         List<EndSongObject> endSongObjectArray = new ArrayList<EndSongObject>();
-        ArrayList<String> startreason = new ArrayList<String>();
+        ArrayList<EndSongObject.EndReason> endReasons = new ArrayList<EndSongObject.EndReason>();
 
         int amount = 0;
         String songName = "";
 
         for (JsonElement jsonElement : masterArray) {
             EndSongObject endSongObject = new EndSongObject(jsonElement.getAsJsonObject());
-            startreason.add(endSongObject.getReason_end());
+            endReasons.add(endSongObject.getReason_end());
+
             endSongObjectArray.add(endSongObject);
             if (endSongObject.getMaster_metadata_track_name() != null)
                 if (endSongObject.getMaster_metadata_track_name().equals(songName))
                     amount++;
         }
 
-        startreason = Helper.removeDuplicates(startreason);
+        endReasons = Helper.removeDuplicates(endReasons);
         System.out.println("You listened to " + songName + " " + amount + " times.");
-        System.out.println(startreason);
+        System.out.println(endReasons);
 
         Collections.sort(endSongObjectArray, new MyComparator());
 
