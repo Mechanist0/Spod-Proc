@@ -73,7 +73,29 @@ public class EndSongObject {
         this.offline = new Gson().fromJson(obj, Offline.class).offline;
         this.offline_timestamp = new Gson().fromJson(obj, OfflineTimestamp.class).offline_timestamp;
         this.incognito_mode = new Gson().fromJson(obj, IncognitoMode.class).incognito_mode;
-
+    }
+    public EndSongObject() {
+        this.ts = null;
+        this.username = null;
+        this.platform = null;
+        this.ms_played = 0;
+        this.conn_country = null;
+        this.ip_addr_decrypted = null;
+        this.user_agent_decrypted = null;
+        this.master_metadata_track_name = null;
+        this.master_metadata_album_artist_name = null;
+        this.master_metadata_album_album_name = null;
+        this.spotify_track_uri = null;
+        this.episode_name = null;
+        this.episode_show_name = null;
+        this.spotify_episode_uri = null;
+        this.reason_start = null;
+        this.reason_end = null;
+        this.shuffle = null;
+        this.skipped = null;
+        this.offline = null;
+        this.offline_timestamp = 0;
+        this.incognito_mode = null;
     }
 
     public Timestamp getTs() {
@@ -188,16 +210,19 @@ public class EndSongObject {
         this.spotify_episode_uri = spotify_episode_uri;
     }
 
-    public String getReason_start() {
-        return reason_start;
+    public StartReason getReason_start() {
+        
+        return StartReason.valueOf(reason_start);
     }
 
     public void setReason_start(String reason_start) {
         this.reason_start = reason_start;
     }
 
-    public String getReason_end() {
-        return reason_end;
+    public EndReason getReason_end() {
+        if(reason_end.equals("unexpected-exit-while-paused")) return EndReason.unexpectedexitwhilepaused;
+        if(reason_end.equals("unexpected-exit")) return EndReason.unexpectedexit;
+        return EndReason.valueOf(reason_end);
     }
 
     public void setReason_end(String reason_end) {
@@ -256,7 +281,31 @@ public class EndSongObject {
         return "[" + getMaster_metadata_track_name() + "],";
     }
 
-        
+    public enum StartReason {
+        trackdone, 
+        backbtn, 
+        clickrow, 
+        fwdbtn, 
+        appload, 
+        playbtn, 
+        trackerror, 
+        remote, 
+        unknown, 
+        endplay,
+    }
+    
+    public enum EndReason {
+        trackdone,
+        backbtn, 
+        fwdbtn, 
+        endplay, 
+        unexpectedexitwhilepaused, 
+        logout, 
+        remote, 
+        unexpectedexit, 
+        unknown, 
+        trackerror,
+    }
 }
 class TS {
     public Timestamp ts;
@@ -301,29 +350,5 @@ class IncognitoMode {
     public Boolean incognito_mode;
 }
 
-enum StartReason {
-    TRACKDONE, 
-    BACKBTN, 
-    CLICKROW, 
-    FWDBTN, 
-    APPLOAD, 
-    PLAYBTN, 
-    TRACKERROR, 
-    REMOTE, 
-    UNKOWN, 
-    ENDPLAY,
-}
 
-enum EndReason {
-    TRACKDONE,
-    BACKBTN, 
-    FWDBTN, 
-    ENDPLAY, 
-    UNEXPECTEDEXITWHILEPAUSED, 
-    LOGOUT, 
-    REMOTE, 
-    UNEXPECTEDEXIT, 
-    UNKNOWN, 
-    TRACKERROR,
-}
 
