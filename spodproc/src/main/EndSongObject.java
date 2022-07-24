@@ -301,3 +301,29 @@ class IncognitoMode {
     public Boolean incognito_mode;
 }
 
+enum StartReason {
+    TRACKDONE, 
+    BACKBTN, 
+    CLICKROW, 
+    FWDBTN, 
+    APPLOAD, 
+    PLAYBTN, 
+    TRACKERROR, 
+    REMOTE, 
+    UNKOWN, 
+    ENDPLAY,
+}
+
+enum EndReason {
+    TRACKDONE,
+    BACKBTN, 
+    FWDBTN, 
+    ENDPLAY, 
+    UNEXPECTEDEXITWHILEPAUSED, 
+    LOGOUT, 
+    REMOTE, 
+    UNEXPECTEDEXIT, 
+    UNKNOWN, 
+    TRACKERROR,
+}
+
