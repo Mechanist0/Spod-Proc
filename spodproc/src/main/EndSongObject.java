@@ -276,9 +276,16 @@ public class EndSongObject {
         return endSongObject;
     }
 
+    //Convert EndSongObject To Json
+    public String toJson() {
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+        return json;
+    }
+
     @Override
     public String toString() {
-        return "[" + getMaster_metadata_track_name() + "],";
+        return "[" + getTs().toString() + ", " + getMaster_metadata_track_name() + ", " + getPlatform() + ", " + getIp_addr_decrypted() +"],\n";
     }
 
     public enum StartReason {

@@ -1,12 +1,9 @@
 package main;
 
-/**
- * Hello world!
- *
- */
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,24 +14,12 @@ public class SpodProc {
         String fileName = "spodproc/src/resources/endsong_0.json";
         JsonArray masterArray = Helper.readJsonFile(fileName);
         List<EndSongObject> endSongObjectArray = new ArrayList<EndSongObject>();
-        ArrayList<EndSongObject.EndReason> endReasons = new ArrayList<EndSongObject.EndReason>();
-
-        int amount = 0;
-        String songName = "";
 
         for (JsonElement jsonElement : masterArray) {
             EndSongObject endSongObject = new EndSongObject(jsonElement.getAsJsonObject());
-            endReasons.add(endSongObject.getReason_end());
 
             endSongObjectArray.add(endSongObject);
-            if (endSongObject.getMaster_metadata_track_name() != null)
-                if (endSongObject.getMaster_metadata_track_name().equals(songName))
-                    amount++;
         }
-
-        endReasons = Helper.removeDuplicates(endReasons);
-        System.out.println("You listened to " + songName + " " + amount + " times.");
-        System.out.println(endReasons);
 
         Collections.sort(endSongObjectArray, new MyComparator());
 
@@ -43,6 +28,30 @@ public class SpodProc {
             System.out.println(obj.getTs() + " " + obj.getMaster_metadata_track_name());
         }
 
+        try {
+            FileWriter writer = new FileWriter("spodproc/src/resources/endsong_1.json");
+            //clear file
+            writer.write("");
+            writer.flush();
+            //write new data
+            for (EndSongObject obj : endSongObjectArray) {
+                switch(obj.getIncognito_mode() ? "on" : "off") {
+                    case "on":
+                        break;
+                    case "off":
+                        writer.write(obj.toString());
+                        break;
+                    default:
+                        writer.write("???" + obj.toString());
+                        break;
+                }
+            }
+            writer.close();
+            System.out.println("File written successfully");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }  
 }
 
