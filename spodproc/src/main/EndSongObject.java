@@ -285,7 +285,7 @@ public class EndSongObject {
 
     @Override
     public String toString() {
-        return "[" + getTs().toString() + ", " + getMaster_metadata_track_name() + ", " + getPlatform() + ", " + getIp_addr_decrypted() +"],\n";
+        return new Gson().toJson(this) + ",\n";
     }
 
     public enum StartReason {
