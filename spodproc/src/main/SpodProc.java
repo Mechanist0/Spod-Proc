@@ -26,22 +26,13 @@ public class SpodProc {
         try {
             FileWriter writer = new FileWriter("spodproc/src/resources/endsong_1.json");
             //clear file
-            writer.write("");
-            writer.flush();
+            writer.write("[\n");
             //write new data
             for (EndSongObject obj : endSongObjectArray) {
-                //If incognito mode is on, don't write the track name
-                switch(obj.getIncognito_mode() ? "on" : "off") {
-                    case "on":
-                        break;
-                    case "off":
-                        writer.write(obj.toString());
-                        break;
-                    default:
-                        writer.write("???" + obj.toString());
-                        break;
-                }
+                //Ignore this, mainly for testing purposes
+                writer.write(obj.toString());
             }
+            writer.write("]");
             writer.close();
             System.out.println("File written successfully");
         } catch (IOException e) {
