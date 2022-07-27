@@ -278,14 +278,12 @@ public class EndSongObject {
 
     //Convert EndSongObject To Json
     public String toJson() {
-        Gson gson = new Gson();
-        String json = gson.toJson(this);
-        return json;
+        return new Gson().toJson(this);
     }
 
     @Override
     public String toString() {
-        return new Gson().toJson(this) + ",\n";
+        return this.getMaster_metadata_track_name();
     }
 
     public enum StartReason {
