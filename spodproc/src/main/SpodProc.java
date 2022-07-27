@@ -2,8 +2,6 @@ package main;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,23 +20,6 @@ public class SpodProc {
         }
 
         Collections.sort(endSongObjectArray, new MyComparator());
-
-        try {
-            FileWriter writer = new FileWriter("spodproc/src/resources/endsong_1.json");
-            //clear file
-            writer.write("[\n");
-            //write new data
-            for (EndSongObject obj : endSongObjectArray) {
-                //Ignore this, mainly for testing purposes
-                writer.write(obj.toString());
-            }
-            writer.write("]");
-            writer.close();
-            System.out.println("File written successfully");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
     }  
 }
 
