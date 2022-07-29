@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
@@ -13,6 +14,22 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 public class Helper {
+
+    public static Map<String, Integer> countListens(List<EndSongObject> objList) {
+        Map<String, Integer> countMap = new java.util.HashMap<String, Integer>();
+
+        for (EndSongObject obj : objList) {
+            if(obj.getMaster_metadata_track_name() != null) {
+                if (countMap.containsKey(obj.getMaster_metadata_track_name())) {
+                    countMap.put(obj.getMaster_metadata_track_name(), countMap.get(obj.getMaster_metadata_track_name()) + 1);
+                } else {
+                    countMap.put(obj.getMaster_metadata_track_name(), 1);
+                }
+            }
+        }
+
+        return countMap;
+    }
 
     // From
     // https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
