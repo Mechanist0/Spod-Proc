@@ -5,7 +5,10 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class SpodProc {
     public static void main(String[] args) {
@@ -21,6 +24,24 @@ public class SpodProc {
 
         Collections.sort(endSongObjectArray, new PlatformComparator());
         Helper.writeJsonFile(endSongObjectArray, "spodproc/src/resources/endsong_1.json");
+        Map<String, Integer> countMap = Helper.countListens(endSongObjectArray);
+
+        List<Map.Entry<String, Integer>> countList = new LinkedList<Map.Entry<String, Integer>>(countMap.entrySet());
+        Collections.sort(countList, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+
+        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+        for (int i = countList.size()-1; i >= 0; i--) {
+            Map.Entry<String, Integer> entry = countList.get(i);
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        for (Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
     }  
 }
 
