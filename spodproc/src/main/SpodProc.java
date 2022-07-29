@@ -2,6 +2,7 @@ package main;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,15 +35,23 @@ public class SpodProc {
         });
 
         Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
-        for (int i = countList.size()-1; i >= 0; i--) {
+        for (int i = 0; i < countList.size(); i++) {
             Map.Entry<String, Integer> entry = countList.get(i);
             sortedMap.put(entry.getKey(), entry.getValue());
         }
 
-        for (Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue());
-        }
-    }  
+        try {
+                FileWriter writer = new FileWriter("spodproc/src/resources/MostListened.txt");
+                writer.write("Most Listened Songs\n");
+                for (Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
+                    writer.write(entry.getKey() + " : " + entry.getValue() + "\n");
+                }
+                writer.close();
+            } catch (Exception e) {
+                System.out.println("A file writer error occurred.");
+                e.printStackTrace();
+            }
+    }    
 }
 
 //Compares two EndSongObjects by their timestamps
