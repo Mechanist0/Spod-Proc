@@ -50,6 +50,7 @@ public class SpodProc {
             } catch (Exception e) {
                 System.out.println("A file writer error occurred.");
                 e.printStackTrace();
+                System.exit(1);
             }
     }    
 }
