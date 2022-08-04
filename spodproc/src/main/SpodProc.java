@@ -3,13 +3,13 @@ package main;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class SpodProc {
     public static void main(String[] args) {
-        String fileName = "spodproc/src/resources/endsong_0.json";
+        int fileNumber = 0;
+        String fileName = "spodproc/src/resources/endsong_"+fileNumber+".json";
         JsonArray masterArray = Helper.readJsonFile(fileName);
         List<EndSongObject> endSongObjectArray = new ArrayList<EndSongObject>();
 
@@ -19,10 +19,7 @@ public class SpodProc {
             endSongObjectArray.add(endSongObject);
         }
 
-        Collections.sort(endSongObjectArray, new PlatformComparator());
-        Helper.writeJsonFile(endSongObjectArray, "spodproc/src/resources/endsong_1.json");
-
-        System.out.println(Helper.getTotalMs(endSongObjectArray));
+        Helper.writeJsonFile(Helper.censorEndSongObjects(endSongObjectArray), "spodproc/src/resources/c_endsong_"+fileNumber+".json"); 
     }    
 }
 

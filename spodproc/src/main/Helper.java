@@ -121,4 +121,34 @@ public class Helper {
         for (EndSongObject obj : objArray) timeListenMS += obj.getMs_played();
         return timeListenMS;
     }
+
+    public static List<EndSongObject> censorEndSongObjects(List<EndSongObject> objArray) {
+        List<EndSongObject> censoredArray = new ArrayList<EndSongObject>();
+
+        for (EndSongObject obj : objArray) {
+            obj.username = "";
+            obj.platform = "";
+            obj.ms_played = 0;
+            obj.conn_country = "";
+            obj.ip_addr_decrypted = "";
+            obj.user_agent_decrypted = "";
+            obj.master_metadata_track_name = "";
+            obj.master_metadata_album_artist_name = "";
+            obj.master_metadata_album_album_name = "";
+            obj.spotify_track_uri = "";
+            obj.episode_name = "";
+            obj.episode_show_name = "";
+            obj.spotify_episode_uri = "";
+            obj.reason_start = "";
+            obj.reason_end = "";
+            obj.shuffle = false;
+            obj.skipped = false;
+            obj.offline = false;
+            obj.offline_timestamp = 0;
+            obj.incognito_mode = false;
+
+            censoredArray.add(obj);
+        }
+        return censoredArray;
+    }
 }

@@ -1,4 +1,5 @@
 package main;
+
 import java.sql.Timestamp;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -50,30 +51,34 @@ public class EndSongObject {
     Boolean incognito_mode;
 
     public EndSongObject(JsonObject obj) {
-        String tempStamp = obj.get("ts").getAsString(); //yyyy-mm-ddT14:07:59Z //yyyy-mm-dd hh:mm:ss[.fffffffff] 
+        String tempStamp = obj.get("ts").getAsString(); // yyyy-mm-ddT14:07:59Z //yyyy-mm-dd hh:mm:ss[.fffffffff]
         tempStamp = tempStamp.replace("T", " ").replace("Z", " ");
         this.ts = Timestamp.valueOf(tempStamp);
-        this.username = obj.get("username").getAsString();
-        this.platform = obj.get("platform").getAsString();
-        this.ms_played = obj.get("ms_played").getAsInt();
-        this.conn_country = obj.get("conn_country").getAsString();
-        this.ip_addr_decrypted = obj.get("ip_addr_decrypted").getAsString();
+        this.username = new Gson().fromJson(obj, Username.class).username;
+        this.platform = new Gson().fromJson(obj, Platform.class).platform;
+        this.ms_played = new Gson().fromJson(obj, MsPlayed.class).ms_played;
+        this.conn_country = new Gson().fromJson(obj, ConnCountry.class).conn_country;
+        this.ip_addr_decrypted = new Gson().fromJson(obj, IpAddrDecrypted.class).ip_addr_decrypted;
         this.user_agent_decrypted = new Gson().fromJson(obj, UserAgentDecrypted.class).user_agent_decrypted;
-        this.master_metadata_track_name = new Gson().fromJson(obj, MasterMetadataTrackName.class).master_metadata_track_name;
-        this.master_metadata_album_artist_name = new Gson().fromJson(obj, MasterMetadataAlbumArtistName.class).master_metadata_album_artist_name;
-        this.master_metadata_album_album_name = new Gson().fromJson(obj, MasterMetadataAlbumAlbumName.class).master_metadata_album_album_name;
+        this.master_metadata_track_name = new Gson().fromJson(obj,
+                MasterMetadataTrackName.class).master_metadata_track_name;
+        this.master_metadata_album_artist_name = new Gson().fromJson(obj,
+                MasterMetadataAlbumArtistName.class).master_metadata_album_artist_name;
+        this.master_metadata_album_album_name = new Gson().fromJson(obj,
+                MasterMetadataAlbumAlbumName.class).master_metadata_album_album_name;
         this.spotify_track_uri = new Gson().fromJson(obj, SpotifyTrackUri.class).spotify_track_uri;
         this.episode_name = new Gson().fromJson(obj, EpisodeName.class).episode_name;
         this.episode_show_name = new Gson().fromJson(obj, EpisodeShowName.class).episode_show_name;
         this.spotify_episode_uri = new Gson().fromJson(obj, SpotifyEpisodeUri.class).spotify_episode_uri;
-        this.reason_start = obj.get("reason_start").getAsString();
-        this.reason_end = obj.get("reason_end").getAsString();
+        this.reason_start = new Gson().fromJson(obj, ReasonStart.class).reason_start;
+        this.reason_end = new Gson().fromJson(obj, ReasonEnd.class).reason_end;
         this.shuffle = new Gson().fromJson(obj, Shuffle.class).shuffle;
         this.skipped = new Gson().fromJson(obj, Skipped.class).skipped;
         this.offline = new Gson().fromJson(obj, Offline.class).offline;
         this.offline_timestamp = new Gson().fromJson(obj, OfflineTimestamp.class).offline_timestamp;
         this.incognito_mode = new Gson().fromJson(obj, IncognitoMode.class).incognito_mode;
     }
+
     public EndSongObject() {
         this.ts = null;
         this.username = null;
@@ -211,7 +216,7 @@ public class EndSongObject {
     }
 
     public StartReason getReason_start() {
-        
+
         return StartReason.valueOf(reason_start);
     }
 
@@ -220,8 +225,10 @@ public class EndSongObject {
     }
 
     public EndReason getReason_end() {
-        if(reason_end.equals("unexpected-exit-while-paused")) return EndReason.unexpectedexitwhilepaused;
-        if(reason_end.equals("unexpected-exit")) return EndReason.unexpectedexit;
+        if (reason_end.equals("unexpected-exit-while-paused"))
+            return EndReason.unexpectedexitwhilepaused;
+        if (reason_end.equals("unexpected-exit"))
+            return EndReason.unexpectedexit;
         return EndReason.valueOf(reason_end);
     }
 
@@ -269,14 +276,14 @@ public class EndSongObject {
         this.incognito_mode = incognito_mode;
     }
 
-    //Convert EndSongObject From Json
+    // Convert EndSongObject From Json
     public static EndSongObject fromJson(String json) {
         Gson gson = new Gson();
         EndSongObject endSongObject = gson.fromJson(json, EndSongObject.class);
         return endSongObject;
     }
 
-    //Convert EndSongObject To Json
+    // Convert EndSongObject To Json
     public String toJson() {
         return new Gson().toJson(this);
     }
@@ -287,73 +294,112 @@ public class EndSongObject {
     }
 
     public enum StartReason {
-        trackdone, 
-        backbtn, 
-        clickrow, 
-        fwdbtn, 
-        appload, 
-        playbtn, 
-        trackerror, 
-        remote, 
-        unknown, 
+        trackdone,
+        backbtn,
+        clickrow,
+        fwdbtn,
+        appload,
+        playbtn,
+        trackerror,
+        remote,
+        unknown,
         endplay,
     }
-    
+
     public enum EndReason {
         trackdone,
-        backbtn, 
-        fwdbtn, 
-        endplay, 
-        unexpectedexitwhilepaused, 
-        logout, 
-        remote, 
-        unexpectedexit, 
-        unknown, 
+        backbtn,
+        fwdbtn,
+        endplay,
+        unexpectedexitwhilepaused,
+        logout,
+        remote,
+        unexpectedexit,
+        unknown,
         trackerror,
     }
 }
+
 class TS {
     public Timestamp ts;
 }
+
+class Username {
+    public String username;
+}
+
+class Platform {
+    public String platform;
+}
+
+class MsPlayed {
+    public int ms_played;
+}
+
+class ConnCountry {
+    public String conn_country;
+}
+
+class IpAddrDecrypted {
+    public String ip_addr_decrypted;
+}
+
 class UserAgentDecrypted {
     public String user_agent_decrypted;
 }
+
 class MasterMetadataTrackName {
     public String master_metadata_track_name;
 }
+
 class MasterMetadataAlbumArtistName {
     public String master_metadata_album_artist_name;
 }
+
 class MasterMetadataAlbumAlbumName {
     public String master_metadata_album_album_name;
 }
+
 class SpotifyTrackUri {
     public String spotify_track_uri;
 }
+
 class EpisodeName {
     public String episode_name;
 }
+
 class EpisodeShowName {
     public String episode_show_name;
 }
+
 class SpotifyEpisodeUri {
     public String spotify_episode_uri;
 }
+
+class ReasonStart {
+    public String reason_start;
+}
+
+class ReasonEnd {
+    public String reason_end;
+}
+
 class Shuffle {
     public Boolean shuffle;
 }
+
 class Skipped {
     public Boolean skipped;
 }
+
 class Offline {
     public Boolean offline;
 }
+
 class OfflineTimestamp {
     public int offline_timestamp;
 }
+
 class IncognitoMode {
     public Boolean incognito_mode;
 }
-
-
-
