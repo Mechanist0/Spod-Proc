@@ -1,25 +1,12 @@
 package main;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class SpodProc {
     public static void main(String[] args) {
-        int fileNumber = 0;
-        String fileName = "spodproc/src/resources/endsong_"+fileNumber+".json";
-        JsonArray masterArray = Helper.readJsonFile(fileName);
-        List<EndSongObject> endSongObjectArray = new ArrayList<EndSongObject>();
-
-        //Converte the JsonArray to a list of EndSongObjects
-        for (JsonElement jsonElement : masterArray) {
-            EndSongObject endSongObject = new EndSongObject(jsonElement.getAsJsonObject());
-            endSongObjectArray.add(endSongObject);
-        }
-
-        Helper.writeJsonFile(Helper.censorEndSongObjects(endSongObjectArray), "spodproc/src/resources/c_endsong_"+fileNumber+".json"); 
+        List<EndSongObject> endSongObjectArray = Helper.fileToEndSongObjectArray("spodproc/src/resources/endsong_0.json");
+        System.out.println(endSongObjectArray);
     }    
 }
 

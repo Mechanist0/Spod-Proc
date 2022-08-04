@@ -111,6 +111,18 @@ public class Helper {
         }
     }
 
+    public static List<EndSongObject> fileToEndSongObjectArray(String fileName) {
+        JsonArray masterArray = Helper.readJsonFile(fileName);
+        List<EndSongObject> endSongObjectArray = new ArrayList<EndSongObject>();
+
+        //Converte the JsonArray to a list of EndSongObjects
+        for (JsonElement jsonElement : masterArray) {
+            EndSongObject endSongObject = new EndSongObject(jsonElement.getAsJsonObject());
+            endSongObjectArray.add(endSongObject);
+        }
+        return endSongObjectArray;
+    }
+
 
     /**
      * @param objArray
