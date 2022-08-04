@@ -110,4 +110,15 @@ public class Helper {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * @param objArray
+     * @return Total time listened to array in milliseconds
+     */
+    public static long getTotalMs(List<EndSongObject> objArray) {
+        long timeListenMS = 0;
+        for (EndSongObject obj : objArray) timeListenMS += obj.getMs_played();
+        return timeListenMS;
+    }
 }
