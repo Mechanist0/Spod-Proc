@@ -5,12 +5,13 @@ import java.util.List;
 
 public class SpodProc {
     public static void main(String[] args) {
-        List<EndSongObject> endSongObjectArray = Helper.fileToEndSongObjectArray("spodproc/src/resources/endsong_0.json");
+        List<EndSongObject> endSongObjectArray = Helper
+                .fileToEndSongObjectArray("spodproc/src/resources/endsong_0.json");
         System.out.println(endSongObjectArray);
-    }    
+    }
 }
 
-//Compares two EndSongObjects by their timestamps
+// Compares two EndSongObjects by their timestamps
 class TimeStampComparator implements Comparator<EndSongObject> {
     @Override
     public int compare(EndSongObject o1, EndSongObject o2) {
@@ -18,7 +19,7 @@ class TimeStampComparator implements Comparator<EndSongObject> {
     }
 }
 
-//Compares two EndSongObjects by their platform
+// Compares two EndSongObjects by their platform
 class PlatformComparator implements Comparator<EndSongObject> {
     @Override
     public int compare(EndSongObject o1, EndSongObject o2) {

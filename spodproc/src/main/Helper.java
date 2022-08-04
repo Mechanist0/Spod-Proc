@@ -19,9 +19,10 @@ public class Helper {
         Map<String, Integer> countMap = new java.util.HashMap<String, Integer>();
 
         for (EndSongObject obj : objList) {
-            if(obj.getMaster_metadata_track_name() != null) {
+            if (obj.getMaster_metadata_track_name() != null) {
                 if (countMap.containsKey(obj.getMaster_metadata_track_name())) {
-                    countMap.put(obj.getMaster_metadata_track_name(), countMap.get(obj.getMaster_metadata_track_name()) + 1);
+                    countMap.put(obj.getMaster_metadata_track_name(),
+                            countMap.get(obj.getMaster_metadata_track_name()) + 1);
                 } else {
                     countMap.put(obj.getMaster_metadata_track_name(), 1);
                 }
@@ -86,7 +87,8 @@ public class Helper {
         }
     }
 
-    //Use generics to write to a file, this will have more use once I implement inheritance
+    // Use generics to write to a file, this will have more use once I implement
+    // inheritance
     public static <T> void writeJsonFile(List<T> endArray, String fileName) {
         try {
             FileWriter writer = new FileWriter(fileName);
@@ -115,7 +117,7 @@ public class Helper {
         JsonArray masterArray = Helper.readJsonFile(fileName);
         List<EndSongObject> endSongObjectArray = new ArrayList<EndSongObject>();
 
-        //Converte the JsonArray to a list of EndSongObjects
+        // Converte the JsonArray to a list of EndSongObjects
         for (JsonElement jsonElement : masterArray) {
             EndSongObject endSongObject = new EndSongObject(jsonElement.getAsJsonObject());
             endSongObjectArray.add(endSongObject);
@@ -123,14 +125,14 @@ public class Helper {
         return endSongObjectArray;
     }
 
-
     /**
      * @param objArray
      * @return Total time listened to array in milliseconds
      */
     public static long getTotalMs(List<EndSongObject> objArray) {
         long timeListenMS = 0;
-        for (EndSongObject obj : objArray) timeListenMS += obj.getMs_played();
+        for (EndSongObject obj : objArray)
+            timeListenMS += obj.getMs_played();
         return timeListenMS;
     }
 
