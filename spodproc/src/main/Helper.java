@@ -15,9 +15,12 @@ import com.google.gson.JsonElement;
 
 public class Helper {
 
+    /**
+     * @param  objList   A list of EndSongObjects
+     * @return countMap  with Master_metadata_track_name as key and amount of occurrences as value
+     */
     public static Map<String, Integer> countListens(List<EndSongObject> objList) {
         Map<String, Integer> countMap = new java.util.HashMap<String, Integer>();
-
         for (EndSongObject obj : objList) {
             if (obj.getMaster_metadata_track_name() != null) {
                 if (countMap.containsKey(obj.getMaster_metadata_track_name())) {
@@ -28,7 +31,6 @@ public class Helper {
                 }
             }
         }
-
         return countMap;
     }
 
@@ -87,7 +89,7 @@ public class Helper {
         }
     }
 
-    // Use generics to write to a file, this will have more use once I implement
+    // Use generics to write to a file, this will have more use if I implement
     // inheritance
     public static <T> void writeJsonFile(List<T> endArray, String fileName) {
         try {
